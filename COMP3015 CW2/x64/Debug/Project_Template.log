@@ -1,0 +1,13 @@
+﻿  glad.c
+  glslprogram.cpp
+  glutils.cpp
+  objmesh.cpp
+E:\OpenGLShaderCW2\COMP3015 CW2\helper\objmesh.cpp(188,43): warning C4267: '+=': conversion from 'size_t' to 'int', possible loss of data
+E:\OpenGLShaderCW2\COMP3015 CW2\helper\objmesh.cpp(194,50): warning C4267: '+=': conversion from 'size_t' to 'int', possible loss of data
+E:\OpenGLShaderCW2\COMP3015 CW2\helper\objmesh.cpp(198,45): warning C4267: '+=': conversion from 'size_t' to 'int', possible loss of data
+  plane.cpp
+  trianglemesh.cpp
+  main.cpp
+  scenebasic_uniform.cpp
+  Generating Code...
+  Project_Template.vcxproj -> E:\OpenGLShaderCW2\COMP3015 CW2\x64\Debug\Project_Template.exe
