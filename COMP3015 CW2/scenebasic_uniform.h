@@ -9,6 +9,7 @@
 
 #include "helper/plane.h"
 #include "helper/objmesh.h"
+#include "helper/skybox.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -17,9 +18,13 @@ class SceneBasic_Uniform : public Scene
 private:
     
     GLSLProgram prog;
+   
+
     Plane plane;  //plane surface
     std::unique_ptr<ObjMesh> Vinayagar;  //model 1 Diety
     std::unique_ptr<ObjMesh> Plant; //model 2 Plant pot
+ 
+
     void compile();
 
 public:

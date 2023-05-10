@@ -13,6 +13,11 @@ EXE: The executable file has to be opened and it will take the information from 
 
 SLN: The user has to press on Local Windows Debugger and it will run the program. 
 
+#Textures :
+https://www.textures.com/download/BrickOldRounded0310/123888 -brick
+https://www.textures.com/download/WoodPlanksOld0210/117308 -wood
+
+
 # Code
 
 Vertex shader:
