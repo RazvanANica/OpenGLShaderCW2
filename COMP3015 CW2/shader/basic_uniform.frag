@@ -25,7 +25,7 @@ uniform float EdgeThreshold;
 uniform int Pass;
 uniform float Weight[5];
 
-const vec3 lum = vec3(0.2126, 0.7152, 0.0722);//luminance
+
 
 //contains the variables for material 
 uniform struct MaterialInfo{
@@ -62,8 +62,12 @@ vec3 blinnPhongReflection(int light, vec3 n, vec4 eyePos){
 }
 
 vec3 toonShading(int light, vec3 n, vec4 eyePos){
+    vec4 brickColour = texture(Tex1, TexCoord);
+    vec4 woodColour = texture(Tex2, TexCoord);
 
-    vec3 ambient = lights[light].La * Material.Ka;
+    vec3 texColour = mix(brickColour.rgb, woodColour.rgb, woodColour.a );
+
+    vec3 ambient = lights[light].La * Material.Ka * texColour;
 
     vec3 s = normalize(vec3(lights[light].Position-(eyePos*lights[light].Position.w))); // calulates direction of light (normalized)
 
@@ -81,17 +85,14 @@ vec3 toonShading(int light, vec3 n, vec4 eyePos){
     return ambient + diffuse + specular; //returns phong reflection model 
 }
 
-float luminance( vec3 color )
-{
- return dot(lum,color);
-}
+
 
 
 vec4 pass1()
 { 
      for(int i = 0; i < 3; i++){
      return vec4(blinnPhongReflection(i, normalize(Normal), Position),1.0);
- }
+     }
 }
 
 vec4 pass2()
@@ -127,16 +128,14 @@ vec4 pass3()
 
 
 void main() {
-   vec3 Colour = vec3(0.0);
-  
-  for(int i = 0; i < 3; i++)
-       Colour += blinnPhongReflection(i, Normal, Position);
+   float gamma = 1.7;
+   vec4 result;
    
    if( Pass == 1) 
-    FragColour = pass1();
+    result = pass1();
    else if( Pass == 2) 
-    FragColour = pass2();
+    result = pass2();
    else if( Pass == 3)
-    FragColour = pass3();
-   //FragColour = vec4(Colour, 2.0);
+    result = pass3();
+   FragColour = pow (result,vec4(1.0/gamma));
 }

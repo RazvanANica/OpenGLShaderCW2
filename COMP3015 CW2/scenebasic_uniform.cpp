@@ -32,7 +32,9 @@ void SceneBasic_Uniform::initScene()
     glEnable(GL_DEPTH_TEST);
     projection = mat4(1.0f);
     angle = glm::pi<float>() / 4.0f;
+
     setupFBO();
+
     // Array for full-screen quad
     GLfloat verts[] = {
     -1.0f, -1.0f, 0.0f, 1.0f, -1.0f, 0.0f, 1.0f, 1.0f, 0.0f,
@@ -42,6 +44,7 @@ void SceneBasic_Uniform::initScene()
     0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
     0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f
     };
+
     // Set up the buffers
     unsigned int handle[2];
     glGenBuffers(2, handle);
@@ -49,6 +52,7 @@ void SceneBasic_Uniform::initScene()
     glBufferData(GL_ARRAY_BUFFER, 6 * 3 * sizeof(float), verts, GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, handle[1]);
     glBufferData(GL_ARRAY_BUFFER, 6 * 2 * sizeof(float), tc, GL_STATIC_DRAW);
+
     // Set up the vertex array object
     glGenVertexArrays(1, &fsQuad);
     glBindVertexArray(fsQuad);
@@ -59,7 +63,7 @@ void SceneBasic_Uniform::initScene()
     glVertexAttribPointer((GLuint)2, 2, GL_FLOAT, GL_FALSE, 0, 0);
     glEnableVertexAttribArray(2); // Texture coordinates
     glBindVertexArray(0);
-    prog.setUniform("EdgeThreshold", 0.05f);
+    prog.setUniform("EdgeThreshold", 0.2f);
 
 
     //values for Light uniforms
@@ -73,19 +77,19 @@ void SceneBasic_Uniform::initScene()
     }
 
     //diffuse
-    prog.setUniform("lights[0].Ld", vec3(1.0f));
-    prog.setUniform("lights[1].Ld", vec3(1.0f));
-    prog.setUniform("lights[2].Ld", vec3(1.0f));
+    prog.setUniform("lights[0].Ld", vec3(0.2f));
+    prog.setUniform("lights[1].Ld", vec3(0.2f));
+    prog.setUniform("lights[2].Ld", vec3(0.2f));
 
     //ambient
-    prog.setUniform("lights[0].La", vec3(1.0f));
-    prog.setUniform("lights[1].La", vec3(1.0f));
-    prog.setUniform("lights[2].La", vec3(1.0f));
+    prog.setUniform("lights[0].La", vec3(0.2f));
+    prog.setUniform("lights[1].La", vec3(0.2f));
+    prog.setUniform("lights[2].La", vec3(0.2f));
 
     //specular
-    prog.setUniform("lights[0].Ls", vec3(1.0f));
-    prog.setUniform("lights[1].Ls", vec3(1.0f));
-    prog.setUniform("lights[2].Ls", vec3(1.0f));
+    prog.setUniform("lights[0].Ls", vec3(0.2f));
+    prog.setUniform("lights[1].Ls", vec3(0.2f));
+    prog.setUniform("lights[2].Ls", vec3(0.2f));
 
     float weights[5], sum, sigma2 = 8.0f;
     // Compute and sum the weights
@@ -128,15 +132,7 @@ void SceneBasic_Uniform::compile()
 
 void SceneBasic_Uniform::update( float t )
 {
-    float deltaT = t - tPrev;
-    if (tPrev == 0.0f)
-        deltaT = 0.0f;
-    tPrev = t;
-    angle += rotSpeed * deltaT;
-    if (angle > glm::two_pi<float>())
-        angle -= glm::two_pi<float>();
-
-	
+    angle = t * 10.0f;
 }
 
 void SceneBasic_Uniform::render()
@@ -220,6 +216,7 @@ void SceneBasic_Uniform::pass1()
     glBindFramebuffer(GL_FRAMEBUFFER, renderFBO);
     glEnable(GL_DEPTH_TEST);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
     view = glm::lookAt(vec3(0.0f, 4.0f, 5.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 2.0f, 1.0f));
     projection = glm::perspective(glm::radians(60.0f), (float)width / height,
         0.3f, 100.0f);
@@ -253,7 +250,7 @@ void SceneBasic_Uniform::pass1()
 
     model = mat4(1.0f);
     model = glm::translate(model, vec3(1.0f, 1.5f, 0.0f));
-    model = glm::rotate(model, glm::radians(-45.0f), vec3(0.0f, 1.0f, 0.0f));
+    model = glm::rotate(model, glm::radians(-45.0f * angle), vec3(0.0f, 1.0f, 0.0f));
     setMatrices();
     Vinayagar->render();
 
