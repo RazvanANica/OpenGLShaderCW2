@@ -18,22 +18,37 @@ class SceneBasic_Uniform : public Scene
 private:
     
     GLSLProgram prog;
-   
+    GLuint fsQuad;
+    GLuint renderFBO, intermediateFBO;
+    GLuint renderTex, intermediateTex;
+
+    float angle;
+    float tPrev, rotSpeed;
 
     Plane plane;  //plane surface
     std::unique_ptr<ObjMesh> Vinayagar;  //model 1 Diety
     std::unique_ptr<ObjMesh> Plant; //model 2 Plant pot
- 
+
+  
 
     void compile();
+    void setupFBO();
+    void pass1();
+    void pass2();
+    void pass3();
+
+    float gauss(float, float);
+
+
 
 public:
     SceneBasic_Uniform();
-    void setMatrices();
+
     void initScene();
     void update( float t );
     void render();
     void resize(int, int);
+    void setMatrices();
 };
 
 #endif // SCENEBASIC_UNIFORM_H

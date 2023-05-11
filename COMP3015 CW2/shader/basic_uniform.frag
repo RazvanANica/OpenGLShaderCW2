@@ -4,11 +4,12 @@ in vec4 Position;
 in vec3 Normal;
 in vec2 TexCoord;
 
-layout (binding = 0) uniform sampler2D Tex1;
-layout (binding = 1) uniform sampler2D Tex2;
+layout (binding = 0) uniform sampler2D Texture0;
+layout (binding = 1) uniform sampler2D Tex1;
+layout (binding = 2) uniform sampler2D Tex2;
 
 
-layout (location = 0) out vec4 FragColor;
+layout (location = 0) out vec4 FragColour;
 
 
 //contains the variables for light 
@@ -20,8 +21,11 @@ uniform struct LightInfo{
 } lights[3]; //multiple lights
 
 
-const int level = 3;
-const float scaleFactor = 1.0 / level;
+uniform float EdgeThreshold;
+uniform int Pass;
+uniform float Weight[5];
+
+const vec3 lum = vec3(0.2126, 0.7152, 0.0722);//luminance
 
 //contains the variables for material 
 uniform struct MaterialInfo{
@@ -65,7 +69,7 @@ vec3 toonShading(int light, vec3 n, vec4 eyePos){
 
     float sDotN = max(dot(s,n),0.0); //calculates the dot product between the direction from the origin of light and the normal vector;
    
-   vec3 diffuse = lights[light].Ld * Material.Kd* (floor(sDotN * level) *scaleFactor); // calculates diffuse refelction
+   vec3 diffuse = lights[light].Ld * Material.Kd* sDotN ; // calculates diffuse refelction
    vec3 specular = vec3(0.0);
 
     if(sDotN > 0.0){ 
@@ -76,11 +80,63 @@ vec3 toonShading(int light, vec3 n, vec4 eyePos){
 
     return ambient + diffuse + specular; //returns phong reflection model 
 }
+
+float luminance( vec3 color )
+{
+ return dot(lum,color);
+}
+
+
+vec4 pass1()
+{ 
+     for(int i = 0; i < 3; i++){
+     return vec4(blinnPhongReflection(i, normalize(Normal), Position),1.0);
+ }
+}
+
+vec4 pass2()
+{
+     ivec2 pix = ivec2( gl_FragCoord.xy );
+     vec4 sum = texelFetch(Texture0, pix, 0) * Weight[0];
+     sum += texelFetchOffset( Texture0, pix, 0, ivec2(0,1) ) * Weight[1];
+     sum += texelFetchOffset( Texture0, pix, 0, ivec2(0,-1) ) * Weight[1];
+     sum += texelFetchOffset( Texture0, pix, 0, ivec2(0,2) ) * Weight[2];
+     sum += texelFetchOffset( Texture0, pix, 0, ivec2(0,-2) ) * Weight[2];
+     sum += texelFetchOffset( Texture0, pix, 0, ivec2(0,3) ) * Weight[3];
+     sum += texelFetchOffset( Texture0, pix, 0, ivec2(0,-3) ) * Weight[3];
+     sum += texelFetchOffset( Texture0, pix, 0, ivec2(0,4) ) * Weight[4];
+     sum += texelFetchOffset( Texture0, pix, 0, ivec2(0,-4) ) * Weight[4];
+     return sum;
+}
+
+vec4 pass3()
+{
+     ivec2 pix = ivec2( gl_FragCoord.xy );
+     vec4 sum = texelFetch(Texture0, pix, 0) * Weight[0];
+     sum += texelFetchOffset( Texture0, pix, 0, ivec2(1,0) ) * Weight[1];
+     sum += texelFetchOffset( Texture0, pix, 0, ivec2(-1,0) ) * Weight[1];
+     sum += texelFetchOffset( Texture0, pix, 0, ivec2(2,0) ) * Weight[2];
+     sum += texelFetchOffset( Texture0, pix, 0, ivec2(-2,0) ) * Weight[2];
+     sum += texelFetchOffset( Texture0, pix, 0, ivec2(3,0) ) * Weight[3];
+     sum += texelFetchOffset( Texture0, pix, 0, ivec2(-3,0) ) * Weight[3];
+     sum += texelFetchOffset( Texture0, pix, 0, ivec2(4,0) ) * Weight[4];
+     sum += texelFetchOffset( Texture0, pix, 0, ivec2(-4,0) ) * Weight[4];
+     return sum;
+}
+
+
+
 void main() {
    vec3 Colour = vec3(0.0);
   
   for(int i = 0; i < 3; i++)
        Colour += blinnPhongReflection(i, Normal, Position);
    
-   FragColor = vec4(Colour, 2.0);
+   if( Pass == 1) 
+    FragColour = pass1();
+   else if( Pass == 2) 
+    FragColour = pass2();
+   else if( Pass == 3)
+    FragColour = pass3();
+   //FragColour = vec4(Colour, 2.0);
 }
