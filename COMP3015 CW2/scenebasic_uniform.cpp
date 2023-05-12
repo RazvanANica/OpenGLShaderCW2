@@ -125,6 +125,14 @@ void SceneBasic_Uniform::update( float t )
         // Right
         move -= speed * 0.05f;
     }
+    else if (IsKeyDown('W')) {
+        // up
+        up -= speed * 0.05f;
+    }
+    else if (IsKeyDown('S')) {
+        // down
+        up += speed * 0.05f;
+    }
     else if (IsKeyDown('Q')) {
         // Rotate right
         rotate += speed * 0.50f;
@@ -133,11 +141,11 @@ void SceneBasic_Uniform::update( float t )
         // Rotate left
         rotate -= speed * 0.50f;
     }
-    else if (IsKeyDown('W')) {
-        // up
+    else if (IsKeyDown('O')) {
+        // up   //16 - is Left shift
         moveObj += speed * 0.05f;
     }
-    else if (IsKeyDown('S')) {
+    else if (IsKeyDown('P')) {
         // down
         moveObj -= speed * 0.05f;
     }
@@ -208,8 +216,8 @@ void SceneBasic_Uniform::pass1()
     glEnable(GL_DEPTH_TEST);
     
 
-    view = glm::lookAt(vec3(0.0f, 4.0f, 5.0f) , vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 2.0f, 1.0f));
-    view = glm::translate(view, vec3(move * 1.1f, 0.0f, 0.0f));
+    view = glm::lookAt(vec3(0.0f, 5.0f, 5.0f) , vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 2.0f, 1.0f));
+    view = glm::translate(view, vec3(move * 1.1f, 1.1f * up, 0.0f));
     view = glm::rotate(view, glm::radians(rotate), vec3(0.0f, 1.0f, 0.0f));
     projection = glm::perspective(glm::radians(60.0f), (float)width / height,
         0.3f, 100.0f);
@@ -294,7 +302,7 @@ void SceneBasic_Uniform::drawScene()
 
     model = mat4(1.0f);
     model = glm::translate(model, vec3(-1.5f, 1.5f, 0.0f));
-    model = glm::rotate(model, glm::radians(90.0f), vec3(0.0f, 1.0f, 0.0f));
+    model = glm::rotate(model, glm::radians(90.0f* moveObj), vec3(0.0f, 1.0f, 0.0f));
     setMatrices();
     Vinayagar->render();
 
@@ -305,7 +313,7 @@ void SceneBasic_Uniform::drawScene()
 
     model = mat4(1.0f);
     model = glm::translate(model, vec3(1.5f, 1.5f, 0.0f));
-    model = glm::rotate(model, glm::radians(-90.0f), vec3(0.0f, 1.0f, 0.0f));
+    model = glm::rotate(model, glm::radians(-90.0f * moveObj), vec3(0.0f, 1.0f, 0.0f));
     setMatrices();
     Vinayagar->render();
 
