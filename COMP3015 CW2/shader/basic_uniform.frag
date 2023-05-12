@@ -13,6 +13,13 @@ layout (binding = 2) uniform sampler2D Tex2;
 layout (location = 0) out vec4 FragColour;
 layout (location = 1) out vec3 HdrColor;
 
+//HDR
+uniform int Pass;
+uniform float AveLum;
+
+//toonShading
+const int level = 3;
+const float scaleFactor = 1.0/level;
 
 // XYZ/RGB conversion matrices from:
 // http://www.brucelindbloom.com/index.html?Eqn_RGB_XYZ_Matrix.html
@@ -39,12 +46,6 @@ uniform struct LightInfo{
    vec3 Ld; //light diffuse intensity
    vec3 Ls; //light specular intensity
 } Lights[3]; //multiple lights
-
-
-//uniform float EdgeThreshold;
-uniform int Pass;
-uniform float AveLum;
-//uniform float Weight[5];
 
 
 
@@ -83,9 +84,9 @@ vec3 blinnPhongReflection(int light, vec3 n, vec4 eyePos){
 
 vec3 toonShading(int light, vec3 n, vec4 eyePos){
      
-     vec3 texColour = texture(Tex1, TexCoord).rgb;
-
-    
+      vec4 Brick = texture(Tex1, TexCoord);
+     vec4 Moss = texture(Tex2, TexCoord);
+     vec3 texColour = mix(Brick.rgb, Moss.rgb, Moss.a); 
 
     vec3 ambient = Lights[light].La * Material.Ka * texColour;
 
@@ -93,7 +94,7 @@ vec3 toonShading(int light, vec3 n, vec4 eyePos){
 
     float sDotN = max(dot(s,n),0.0); //calculates the dot product between the direction from the origin of light and the normal vector;
    
-   vec3 diffuse = Lights[light].Ld * Material.Kd* sDotN * texColour; // calculates diffuse refelction
+   vec3 diffuse = Lights[light].Ld * Material.Kd* (floor(sDotN*level)* scaleFactor) * texColour; // calculates diffuse refelction
    vec3 specular = vec3(0.0);
 
     if(sDotN > 0.0){ 
@@ -114,7 +115,7 @@ void pass1()
      // Compute shading and store result in high-res framebuffer
      HdrColor = vec3(0.0);
      for( int i = 0; i < 3; i++)
-     HdrColor += blinnPhongReflection(i, n,Position );
+     HdrColor += toonShading(i, n,Position );
 
 }
 
