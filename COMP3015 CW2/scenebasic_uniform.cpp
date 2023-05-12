@@ -223,13 +223,15 @@ void SceneBasic_Uniform::drawScene()
     prog.setUniform("Lights[0].L", intense);
     prog.setUniform("Lights[1].L", intense);
     prog.setUniform("Lights[2].L", intense);
-    vec4 lightPos = vec4(0.0f, 4.0f, 2.5f, 1.0f);
-    lightPos.x = -7.0f;
-    prog.setUniform("Lights[0].Position", view * lightPos);
+    vec4 lightPos = vec4(0.0f, 1.5f, 0.0f, 1.0f);
+    lightPos.x = -5.0f;
+    
+    prog.setUniform("Lights[0].Position",  view * lightPos);
     lightPos.x = 0.0f;
-    prog.setUniform("Lights[1].Position", view * lightPos);
-    lightPos.x = 7.0f;
-    prog.setUniform("Lights[2].Position", view * lightPos);
+    prog.setUniform("Lights[1].Position",  view * lightPos);
+    lightPos.x = 5.0f;
+    
+    prog.setUniform("Lights[2].Position",  view *lightPos);
 
 
 
@@ -241,7 +243,8 @@ void SceneBasic_Uniform::drawScene()
 
     model = mat4(1.0f);
     model = glm::translate(model, vec3(0.0f, 1.0f, 0.0f));
-    model = glm::rotate(model, glm::radians(90.0f), vec3(0.0f, 1.0f, 0.0f));
+    model = glm::rotate(model, glm::radians(-45.0f * angle), vec3(0.0f, 1.0f, 0.0f));
+   
     setMatrices();
     Plant->render();
 
@@ -249,30 +252,30 @@ void SceneBasic_Uniform::drawScene()
     prog.setUniform("Material.Kd", 0.9f, 0.4f, 0.4f);
     prog.setUniform("Material.Ks", 0.9f, 0.4f, 0.4f);
     prog.setUniform("Material.Ka", 0.9f, 0.4f, 0.4f);
-    prog.setUniform("Material.Shininess", 100.0f);
+    prog.setUniform("Material.Shininess", 20.0f);
 
     model = mat4(1.0f);
-    model = glm::translate(model, vec3(-1.0f, 1.5f, 0.0f));
-    model = glm::rotate(model, glm::radians(45.0f * angle), vec3(0.0f, 1.0f, 0.0f));
+    model = glm::translate(model, vec3(-1.5f, 1.5f, 0.0f));
+    model = glm::rotate(model, glm::radians(90.0f), vec3(0.0f, 1.0f, 0.0f));
     setMatrices();
     Vinayagar->render();
 
-    prog.setUniform("Material.Kd", 0.4f, 0.5f, 0.3f);
-    prog.setUniform("Material.Ks", 0.4f, 0.5f, 0.3f);
-    prog.setUniform("Material.Ka", 0.4f, 0.5f, 0.3f);
-    prog.setUniform("Material.Shininess", 100.0f);
+    prog.setUniform("Material.Kd", 0.2f, 0.5f, 0.3f);
+    prog.setUniform("Material.Ks", 0.2f, 0.5f, 0.3f);
+    prog.setUniform("Material.Ka", 0.1f, 0.1f, 0.1f);
+    prog.setUniform("Material.Shininess", 20.0f);
 
     model = mat4(1.0f);
-    model = glm::translate(model, vec3(1.0f, 1.5f, 0.0f));
-    model = glm::rotate(model, glm::radians(-45.0f * angle), vec3(0.0f, 1.0f, 0.0f));
+    model = glm::translate(model, vec3(1.5f, 1.5f, 0.0f));
+    model = glm::rotate(model, glm::radians(-90.0f), vec3(0.0f, 1.0f, 0.0f));
     setMatrices();
     Vinayagar->render();
 
 
-    prog.setUniform("Material.Kd", 1.0f, 1.0f, 1.0f);
-    prog.setUniform("Material.Ks", 1.0f, 1.0f, 1.0f);
-    prog.setUniform("Material.Ka", 1.0f, 1.0f, 1.0f);
-    prog.setUniform("Material.Shininess", 1.0f);
+    prog.setUniform("Material.Kd", 0.2f, 0.2f, 0.2f);
+    prog.setUniform("Material.Ks", 0.2f, 0.2f, 0.2f);
+    prog.setUniform("Material.Ka", 0.2f, 0.2f, 0.2f);
+    prog.setUniform("Material.Shininess", 20.0f);
 
     model = mat4(1.0f);
     model = glm::translate(model, vec3(0.0f, -0.45f, 0.0f));
