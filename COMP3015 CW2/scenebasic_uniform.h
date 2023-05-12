@@ -18,9 +18,9 @@ class SceneBasic_Uniform : public Scene
 private:
     
     GLSLProgram prog;
-    GLuint fsQuad;
-    GLuint renderFBO, intermediateFBO;
-    GLuint renderTex, intermediateTex;
+    GLuint hdrFBO;
+    GLuint quad;
+    GLuint hdrTex, avgTex;
 
     float angle;
     float tPrev, rotSpeed;
@@ -35,10 +35,8 @@ private:
     void setupFBO();
     void pass1();
     void pass2();
-    void pass3();
-
-    float gauss(float, float);
-
+    void computeLogAveLuminance();
+    void drawScene();
 
 
 public:
