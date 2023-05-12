@@ -24,6 +24,7 @@ private:
 
     float angle;
     float tPrev, rotSpeed;
+    float move, rotate, moveObj;
 
     Plane plane;  //plane surface
     std::unique_ptr<ObjMesh> Vinayagar;  //model 1 Diety

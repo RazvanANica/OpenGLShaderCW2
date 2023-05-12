@@ -21,6 +21,6 @@ void main()
 {
     TexCoord = VertexTexCoord;
     getCamSpaceValues(Normal, Position);   
-    gl_Position =ModelViewMatrix * MVP*vec4(VertexPosition, 1.0);
+    gl_Position =MVP*vec4(VertexPosition, 1.0);
    // gl_Position =  vec4(VertexPosition, 1.0);
 }

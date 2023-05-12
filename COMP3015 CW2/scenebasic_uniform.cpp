@@ -1,9 +1,11 @@
 #include "scenebasic_uniform.h"
+#include <Windows.h>
 
 #include <cstdio>
 #include <cstdlib>
 #include <sstream>
 #include <string>
+
 
 using std::string;
 
@@ -11,9 +13,12 @@ using std::string;
 using std::cerr;
 using std::endl;
 
+#include <GLFW/glfw3.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include "helper/glutils.h"
 #include "helper/texture.h"
+#include "helper/scenerunner.h"
+
 
 using glm::vec3;
 using glm::vec4;
@@ -101,10 +106,41 @@ void SceneBasic_Uniform::compile()
 		exit(EXIT_FAILURE);
 	}
 }
-
+bool IsKeyDown(int key)
+{
+    return (GetAsyncKeyState(key) & 0x8000) != 0;
+}
 void SceneBasic_Uniform::update( float t )
 {
     angle = t * 10.0f;
+   
+    float speed = 1.0f;
+
+    // Example usage:
+    if (IsKeyDown('A')) {
+        // Left
+        move += speed * 0.05f;
+    }
+    else if (IsKeyDown('D')) {
+        // Right
+        move -= speed * 0.05f;
+    }
+    else if (IsKeyDown('Q')) {
+        // Rotate right
+        rotate += speed * 0.50f;
+    }
+    else if (IsKeyDown('E')) {
+        // Rotate left
+        rotate -= speed * 0.50f;
+    }
+    else if (IsKeyDown('W')) {
+        // up
+        moveObj += speed * 0.05f;
+    }
+    else if (IsKeyDown('S')) {
+        // down
+        moveObj -= speed * 0.05f;
+    }
 }
 
 void SceneBasic_Uniform::render()
@@ -172,10 +208,12 @@ void SceneBasic_Uniform::pass1()
     glEnable(GL_DEPTH_TEST);
     
 
-    view = glm::lookAt(vec3(0.0f, 4.0f, 5.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 2.0f, 1.0f));
+    view = glm::lookAt(vec3(0.0f, 4.0f, 5.0f) , vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 2.0f, 1.0f));
+    view = glm::translate(view, vec3(move * 1.1f, 0.0f, 0.0f));
+    view = glm::rotate(view, glm::radians(rotate), vec3(0.0f, 1.0f, 0.0f));
     projection = glm::perspective(glm::radians(60.0f), (float)width / height,
         0.3f, 100.0f);
-    
+    view = glm::translate(view, vec3(0.0f * move, 1.0f, 0.0f));
 
     drawScene();
 }
@@ -242,7 +280,7 @@ void SceneBasic_Uniform::drawScene()
     prog.setUniform("Material.Shininess", 100.0f);
 
     model = mat4(1.0f);
-    model = glm::translate(model, vec3(0.0f, 1.0f, 0.0f));
+    model = glm::translate(model, vec3(0.0f, 1.0f * moveObj, 0.0f));
     model = glm::rotate(model, glm::radians(-45.0f * angle), vec3(0.0f, 1.0f, 0.0f));
    
     setMatrices();
