@@ -123,7 +123,7 @@ void pass1()
 // This pass computes the sum of the luminance of all pixels
 void pass2()
 {
-     // Retrieve high-res color from texture
+     // Retrieve high-res colour from texture
      vec4 colour = texture( HdrTex, TexCoord );
 
      // Convert to XYZ
