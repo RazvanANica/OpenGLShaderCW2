@@ -106,6 +106,8 @@ void SceneBasic_Uniform::compile()
 		exit(EXIT_FAILURE);
 	}
 }
+
+//checks if a key is pressed down
 bool IsKeyDown(int key)
 {
     return (GetAsyncKeyState(key) & 0x8000) != 0;
@@ -116,7 +118,7 @@ void SceneBasic_Uniform::update( float t )
    
     float speed = 1.0f;
 
-    // Example usage:
+   
     if (IsKeyDown('A')) {
         // Left
         move += speed * 0.05f;
@@ -242,6 +244,7 @@ void SceneBasic_Uniform::pass2()
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
+//computes the average luminance 
 void SceneBasic_Uniform::computeLogAveLuminance()
 {
 
@@ -278,8 +281,6 @@ void SceneBasic_Uniform::drawScene()
     lightPos.x = 5.0f;
     
     prog.setUniform("Lights[2].Position",  view *lightPos);
-
-
 
 
     prog.setUniform("Material.Kd", 0.5f, 0.7f, 0.2f);

@@ -1,16 +1,4 @@
-﻿  glad.c
-  glslprogram.cpp
-  glutils.cpp
-  objmesh.cpp
-E:\OpenGLShaderCW2\COMP3015 CW2\helper\objmesh.cpp(188,43): warning C4267: '+=': conversion from 'size_t' to 'int', possible loss of data
-E:\OpenGLShaderCW2\COMP3015 CW2\helper\objmesh.cpp(194,50): warning C4267: '+=': conversion from 'size_t' to 'int', possible loss of data
-E:\OpenGLShaderCW2\COMP3015 CW2\helper\objmesh.cpp(198,45): warning C4267: '+=': conversion from 'size_t' to 'int', possible loss of data
-  plane.cpp
-  sphere.cpp
-  stb_image.cpp
-  texture.cpp
-  trianglemesh.cpp
-  main.cpp
+﻿  main.cpp
   scenebasic_uniform.cpp
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
 C:\Dependencies\include\glad\glad.h(32): message : see previous definition of 'APIENTRY'

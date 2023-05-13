@@ -23,7 +23,7 @@ private:
     GLuint hdrTex, avgTex;
 
     float angle;
-    float tPrev, rotSpeed;
+   
     float move, up, rotate, moveObj;
 
     Plane plane;  //plane surface

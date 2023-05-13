@@ -27,7 +27,7 @@ The vertex shader has variables which store information based on the name they h
 Fragment shader:
 The fragment shader takes care of the HDR, toon shading, multi-lights and multi-textures. It has 3 binding layouts for the HDR and the multi-texture. All of the uniforms and constants are named in a way that lets the user know what they store. There are two uniform structs that are defined in the fragment shader. One is storing the values for the multiple lights, such as the position, and the intensity of the ambient, diffuse, and specular light. The other struct is responsible for the material ambient, diffuse, and specular reflectivity, as well as the shininess of the material itself. 
 
-In the fragment shader, there are also two matrices responsible for the conversion of the XYZ to RGB and the RGB to XYZ. These two matrices are used for the implementation of the HDR, and they can be found in the pass2() function.
+In the fragment shader, there are two matrices responsible for converting the XYZ to RGB and the RGB to XYZ. These two matrices are used for the implementation of the HDR, and they can be found in the pass2() function.
 The fragment shader has 4 methods defined besides the main().
 
 blinnPhongReflection() - handles the Blinn Phong Reflection technique by calculating the ambient diffuse and specular components of the model, as well as implementing the multi-texture. This method is not used.
@@ -41,7 +41,7 @@ pass2() - computes the sum of the luminance of all pixels by retrieving the high
 main() - calls the pass 1 and pass 2 functions
 
 Scene Basic:
-SceneBasic_Uniform() - The constructor of the class which loads the Vinayagar and Pot models.
+SceneBasic_Uniform() - The class's constructor loads the Vinayagar and Pot models.
 
 initScene() - Initializes the scene by enabling depth testing, setting up the projection matrice, calling the FBO, and setting the values for the multiple lights uniforms, as well as loading the textures in the scene.
 
@@ -59,4 +59,4 @@ pass2() - this function renders the final pass of the scene. it sets the Pass un
 computeLogAveLuminance() - computes the average luminance used for the HDR.
 drawScene() - This function sets up the positions of the lights and objects in the scene, as well as the materials.
 
-# YouTube : 
+# YouTube: https://youtu.be/3y2KsHIo7hA
